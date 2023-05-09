@@ -7,7 +7,7 @@ import pygame as pg
 
 WIDTH = 1600  # ゲームウィンドウの幅
 HEIGHT = 900  # ゲームウィンドウの高さ
-NUM_OF_BOMBS = 5  # 爆弾の数
+NUM_OF_BOMBS = 7  # 爆弾の数
 
 
 def check_bound(area: pg.Rect, obj: pg.Rect) -> tuple[bool, bool]:
@@ -86,7 +86,7 @@ class Bird:
         if not (sum_mv[0] == 0 and sum_mv[1] == 0):
             self._img = self._imgs[tuple(sum_mv)]  # 押されたキーの合計値
         screen.blit(self._img, self._rct)
-
+    #def get_derection(self,)
 
 class Bomb:
     """
@@ -114,9 +114,9 @@ class Bomb:
         """
         yoko, tate = check_bound(screen.get_rect(), self._rct)
         if not yoko:
-            self._vx *= -1
+            self._vx *= -3
         if not tate:
-            self._vy *= -1
+            self._vy *= -3
         self._rct.move_ip(self._vx, self._vy)
         screen.blit(self._img, self._rct)
 
@@ -143,6 +143,8 @@ class Beam:
         self._rct.move_ip(self._vx, self._vy)
         screen.blit(self._img, self._rct)
 
+    
+        
 
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
@@ -188,8 +190,11 @@ def main():
                     break
 
         pg.display.update()
-        clock.tick(1000)
+        clock.tick(300)
+        #if (bird==math.randians(45)):
 
+
+    
 
 if __name__ == "__main__":
     pg.init()
