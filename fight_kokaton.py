@@ -7,7 +7,7 @@ import pygame as pg
 
 WIDTH = 1600  # ゲームウィンドウの幅
 HEIGHT = 900  # ゲームウィンドウの高さ
-NUM_OF_BOMBS = 7  # 爆弾の数
+NUM_OF_BOMBS = 6  # 爆弾の数
 
 
 def check_bound(area: pg.Rect, obj: pg.Rect) -> tuple[bool, bool]:
@@ -57,6 +57,7 @@ class Bird:
         self._img = self._imgs[(+1, 0)]   # デフォルトで右      
         self._rct = self._img.get_rect()
         self._rct.center = xy
+        
 
     def change_img(self, num: int, screen: pg.Surface):
         """
@@ -86,7 +87,16 @@ class Bird:
         if not (sum_mv[0] == 0 and sum_mv[1] == 0):
             self._img = self._imgs[tuple(sum_mv)]  # 押されたキーの合計値
         screen.blit(self._img, self._rct)
-    #def get_derection(self,)
+    ###def get_derection(self,x,y):
+       # self._rct
+        #self_x=x
+        #self_y=y
+       #math.degrees=
+        
+
+        
+        
+        
 
 class Bomb:
     """
@@ -114,9 +124,9 @@ class Bomb:
         """
         yoko, tate = check_bound(screen.get_rect(), self._rct)
         if not yoko:
-            self._vx *= -3
+            self._vx *= -1
         if not tate:
-            self._vy *= -3
+            self._vy *= -1
         self._rct.move_ip(self._vx, self._vy)
         screen.blit(self._img, self._rct)
 
@@ -129,6 +139,7 @@ class Beam:
         """
         割愛
         """
+        []
         self._img = pg.transform.rotozoom(pg.image.load(f"ex03/fig/beam.png"), 0, 2.0)  # 画像surface
         self._rct = self._img.get_rect()  # 画像surfaceに対応したrect
         self._rct.left = bird._rct.right  # こうかとんの右側にビームの左側を合わせる
@@ -155,14 +166,15 @@ def main():
     bird = Bird(3, (900, 400))
     bombs = [Bomb() for _ in range(NUM_OF_BOMBS)]
     beam = None
-
+    beams=[]
     tmr = 0
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
-                beam = Beam(bird)
+                beams.append(Beam(bird))
+                
 
         tmr += 1
         screen.blit(bg_img, [0, 0])
@@ -176,22 +188,27 @@ def main():
                 pg.display.update()
                 time.sleep(1)
                 return
+        
+
+                
+                    
             
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
-
-        if beam is not None:  # ビームが存在しているとき
-            beam.update(screen)
-            for i, bomb in enumerate(bombs):
-                if beam._rct.colliderect(bomb._rct):
-                    beam = None
-                    del bombs[i]
-                    bird.change_img(6, screen)
-                    break
-
+        for beam in beams:
+            if beam is not None:  # ビームが存在しているとき
+                beam.update(screen)
+                for i, bomb in enumerate(bombs):
+                    if beam._rct.colliderect(bomb._rct):
+                        beam = None
+                        del bombs[i]
+                        bird.change_img(6, screen)
+                        break
+        
         pg.display.update()
-        clock.tick(300)
-        #if (bird==math.randians(45)):
+        clock.tick(1000)
+        
+
 
 
     
