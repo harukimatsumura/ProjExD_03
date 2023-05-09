@@ -180,7 +180,7 @@ def main():
         screen.blit(bg_img, [0, 0])
         
         
-        for bomb in bombs:
+        for bomb in bombs: #  ビームの追加
             bomb.update(screen)
             if bird._rct.colliderect(bomb._rct):
                 # ゲームオーバー時に，こうかとん画像を切り替え，1秒間表示させる
